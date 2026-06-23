@@ -76,12 +76,15 @@ app.post("/twilio/webhook", async (req, res) => {
     const incoming = extractTwilioIncomingMessage(req.body);
 
     if (incoming?.duplicate) {
+      console.log(`Ignoring duplicate Twilio WhatsApp message ${incoming.id || ""}`.trim());
       return res.type("text/xml").send(buildTwilioReplyXml(""));
     }
 
     if (!incoming?.text) {
       const reply = "Gracias por escribirnos. Por ahora puedo ayudarte mejor si me envias tu consulta en texto.";
-      return res.type("text/xml").send(buildTwilioReplyXml(reply));
+      const xml = buildTwilioReplyXml(reply);
+      console.log(`Twilio bot reply: ${summarizeReply(reply)}; XML ${xml.length} chars`);
+      return res.type("text/xml").send(xml);
     }
 
     console.log(`Incoming Twilio WhatsApp message from ${incoming.from}: ${incoming.text}`);
@@ -92,12 +95,16 @@ app.post("/twilio/webhook", async (req, res) => {
       toPublicUrl: (pathname) => buildPublicUrl(req, pathname)
     });
 
-    return res.type("text/xml").send(buildTwilioReplyXml(reply));
+    const xml = buildTwilioReplyXml(reply);
+    console.log(`Twilio bot reply to ${incoming.from}: ${summarizeReply(reply)}; XML ${xml.length} chars`);
+    return res.type("text/xml").send(xml);
   } catch (error) {
     console.error("Twilio webhook processing error:", error);
 
     const reply = "Gracias por escribirnos. En este momento tuvimos un problema tecnico, pero recepcion puede ayudarte en breve.";
-    return res.type("text/xml").send(buildTwilioReplyXml(reply));
+    const xml = buildTwilioReplyXml(reply);
+    console.log(`Twilio fallback reply: ${summarizeReply(reply)}; XML ${xml.length} chars`);
+    return res.type("text/xml").send(xml);
   }
 });
 
@@ -142,6 +149,20 @@ function buildPublicUrl(req, pathname) {
 function buildConfiguredPublicUrl(pathname) {
   const baseUrl = config.publicBaseUrl || `http://localhost:${config.port}`;
   return new URL(pathname, baseUrl).toString();
+}
+
+function summarizeReply(reply) {
+  if (!reply) {
+    return "no reply";
+  }
+
+  if (typeof reply === "string") {
+    return `text ${reply.length} chars`;
+  }
+
+  const bodyLength = reply.body?.length || 0;
+  const mediaCount = reply.mediaUrls?.length || 0;
+  return `body ${bodyLength} chars, ${mediaCount} media`;
 }
 
 async function sendWhatsAppReply(to, reply) {

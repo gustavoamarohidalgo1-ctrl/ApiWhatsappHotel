@@ -16,6 +16,8 @@ Para brindarle una cotización personalizada, por favor indíquenos:
 const ROOM_OPTIONS_REPLY = `Perfecto, muchas gracias por la información.
 Le compartimos nuestras opciones de habitaciones para su estadía`;
 
+const RESET_REPLY = "Listo, reinicie esta conversacion. Puede escribir: Hola, quiero mas informacion.";
+
 function getConversation(customerId) {
   if (!conversations.has(customerId)) {
     conversations.set(customerId, {
@@ -31,6 +33,11 @@ function getConversation(customerId) {
 }
 
 export function buildViscasReply({ customerId, text, toPublicUrl }) {
+  if (asksToReset(text)) {
+    conversations.delete(customerId);
+    return RESET_REPLY;
+  }
+
   const conversation = getConversation(customerId);
 
   if (conversation.closed) {
@@ -64,7 +71,6 @@ export function buildViscasReply({ customerId, text, toPublicUrl }) {
 }
 
 function extractStayDetails(text) {
-  const normalized = normalize(text);
   const lines = text
     .split(/\r?\n/)
     .map((line) => line.replace(/^[•*-]\s*/, "").trim())
@@ -139,6 +145,11 @@ function hasCompleteStayDetails(conversation) {
 
 function hasPartialStayDetails(conversation) {
   return Boolean(conversation.arrivalDate || conversation.nights || conversation.people);
+}
+
+function asksToReset(text) {
+  const normalized = normalize(text);
+  return /(reiniciar bot|reinicia bot|reset bot|resetear bot|empezar de nuevo|nuevo chat|nueva consulta)/.test(normalized);
 }
 
 function asksForInformation(text) {
