@@ -22,7 +22,8 @@ function getConversation(customerId) {
       arrivalDate: "",
       nights: "",
       people: "",
-      flyersSent: false
+      flyersSent: false,
+      closed: false
     });
   }
 
@@ -31,6 +32,11 @@ function getConversation(customerId) {
 
 export function buildViscasReply({ customerId, text, toPublicUrl }) {
   const conversation = getConversation(customerId);
+
+  if (conversation.closed) {
+    return null;
+  }
+
   const extracted = extractStayDetails(text);
   const currentMessageHasStayDetails = hasCompleteStayDetails(extracted);
 
@@ -41,6 +47,7 @@ export function buildViscasReply({ customerId, text, toPublicUrl }) {
   if (hasCompleteStayDetails(conversation)) {
     if (currentMessageHasStayDetails || !conversation.flyersSent || asksForRoomFlyers(text)) {
       conversation.flyersSent = true;
+      conversation.closed = true;
 
       return {
         body: ROOM_OPTIONS_REPLY,

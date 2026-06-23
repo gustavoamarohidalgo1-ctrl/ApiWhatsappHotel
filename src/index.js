@@ -145,7 +145,13 @@ function buildConfiguredPublicUrl(pathname) {
 }
 
 async function sendWhatsAppReply(to, reply) {
+  if (!reply) {
+    return;
+  }
+
   if (typeof reply === "string") {
+    if (!reply.trim()) return;
+
     await sendWhatsAppText(to, reply);
     return;
   }
