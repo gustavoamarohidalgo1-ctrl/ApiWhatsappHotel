@@ -1,0 +1,56 @@
+{
+  "name": "Viscas Luxury Resort & Spa",
+  "city": "Huaraz",
+  "address": "Huaraz, Ancash, Peru",
+  "phone": "+51 999 999 999",
+  "whatsapp": "+51 999 999 999",
+  "email": "reservas@viscas.com",
+  "checkIn": "15:00",
+  "checkOut": "12:00",
+  "currency": "PEN",
+  "amenities": [
+    "Desayuno incluido",
+    "Terraza privada en suites seleccionadas",
+    "Tina de hidromasaje temperada en suites seleccionadas",
+    "Vista directa al nevado Huascaran en habitaciones seleccionadas",
+    "Experiencia con alpacas en nuestra granja",
+    "Fogata al aire libre",
+    "Tour a la tienda alpaca boutique"
+  ],
+  "policies": {
+    "cancellation": "Las cancelaciones se revisan segun la tarifa y la fecha de reserva.",
+    "pets": "No se aceptan mascotas, salvo animales de asistencia.",
+    "children": "Se aceptan ninos. Consultar disponibilidad de camas adicionales.",
+    "payment": "Se aceptan efectivo, transferencia y tarjetas. La reserva queda sujeta a validacion del hotel."
+  },
+  "rooms": [
+    {
+      "type": "Luxury Suite Privado",
+      "capacity": 4,
+      "priceFrom": 1200,
+      "description": "Cama King Size, cama Full Size, desayuno, terraza privada, tina de hidromasaje temperada en terraza y vista directa al nevado Huascaran. Capacidad: 2 adultos + 2 ninos."
+    },
+    {
+      "type": "Luxury Suite Matrimonial",
+      "capacity": 2,
+      "priceFrom": 800,
+      "description": "Cama King Size, desayuno, terraza privada, tina de hidromasaje temperada en terraza y vista directa al nevado Huascaran. Capacidad: 2 adultos."
+    },
+    {
+      "type": "Matrimonial vista al nevado Huascaran",
+      "capacity": 2,
+      "priceFrom": 500,
+      "description": "Cama King Size, desayuno, balcon privado, vista al nevado Huascaran, experiencia con alpacas, fogata al aire libre y tour a la tienda alpaca boutique."
+    },
+    {
+      "type": "Matrimonial vista a los Andes",
+      "capacity": 2,
+      "priceFrom": 350,
+      "description": "Cama King Size, desayuno, balcon privado, experiencia con alpacas, fogata al aire libre y tour a la tienda alpaca boutique."
+    }
+  ],
+  "humanHandoff": {
+    "label": "recepcion",
+    "message": "Un asesor de recepcion revisara tu solicitud y te confirmara la disponibilidad."
+  }
+}
