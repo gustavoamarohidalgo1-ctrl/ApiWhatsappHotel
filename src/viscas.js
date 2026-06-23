@@ -32,13 +32,14 @@ function getConversation(customerId) {
 export function buildViscasReply({ customerId, text, toPublicUrl }) {
   const conversation = getConversation(customerId);
   const extracted = extractStayDetails(text);
+  const currentMessageHasStayDetails = hasCompleteStayDetails(extracted);
 
   conversation.arrivalDate = extracted.arrivalDate || conversation.arrivalDate;
   conversation.nights = extracted.nights || conversation.nights;
   conversation.people = extracted.people || conversation.people;
 
   if (hasCompleteStayDetails(conversation)) {
-    if (!conversation.flyersSent || asksForRoomFlyers(text)) {
+    if (currentMessageHasStayDetails || !conversation.flyersSent || asksForRoomFlyers(text)) {
       conversation.flyersSent = true;
 
       return {
